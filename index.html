@@ -9,6 +9,9 @@
 		<link rel="icon" type="image/png" href="https://www.sphere.com.ai/images/icon.png"/>
 		<link href="https://www.sphere.com.ai/style/screen.css" rel="stylesheet" type="text/css" media="screen"/>
 		<style>
+			.noClick{
+				pointer-events: none;
+			}
 			#mobileModal {
 				display: none;
 				position: fixed;
@@ -35,6 +38,8 @@
 				display: none;
 				color: red;
 			}
+
+
 		</style>
 	</head>
 	<body>
@@ -1213,11 +1218,20 @@
 				$("#invalid").show();
 			}
 
+			var touchMoved;
+
       $(document).on("touchend", function(event){
-        if(event.target.tagName === "LABEL" || event.target.id === "mobileModal") {
-					$("#mobileModal").toggle();
-        }
-      });
+				if (!touchMoved) {
+					if(event.target.tagName === "LABEL" || event.target.id === "mobileModal") {
+						event.preventDefault();
+						$("#mobileModal").toggle();
+	        }
+				}
+      }).on("touchmove", function(){
+				touchMoved = true;
+			}).on('touchstart', function(event){
+    		touchMoved = false;
+			});
 
 			$("#timeBlock").submit(function(event){
 				event.preventDefault();
