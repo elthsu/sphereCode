@@ -29,9 +29,22 @@
 				position: fixed;
 				top: 50%;
 				left: 50%;
-				transform: translate(-50%,-50%);
+				transform: translate(-50%,-40%);
 				border-radius: 15px;
 				text-align: center;
+				padding: 20px;
+			}
+
+			#modalContent h5 {
+				margin: 5px;
+			}
+
+			#modalContent h6 {
+				margin: 15px;
+			}
+
+			#modalSubmit{
+				margin-top: 10px;
 			}
 
 			#invalid {
@@ -1133,9 +1146,9 @@
 			</div>
 			<div id="mobileModal">
 				<div id="modalContent">
-					<h3>Please select desired block of time.</h3>
+					<h5>Please select desired block of time.</h5>
 					<form id="timeBlock">
-						<h4>Start time:</h4>
+						<h6>Start time:</h6>
 					  <select id="startDay">
 							<option value="sun" data-weight="1">Sunday</option>
 							<option value="mon" data-weight="2">Monday</option>
@@ -1167,7 +1180,7 @@
 							<option value="am">AM</option>
 							<option value="pm">PM</option>
 						</select>
-						<h4>End time:</h4>
+						<h6>End time:</h6>
 						<select id="endDay">
 							<option value="sun" data-weight="1">Sunday</option>
 							<option value="mon" data-weight="2">Monday</option>
@@ -1203,7 +1216,7 @@
 							<input id="modalSubmit" type="submit" />
 						</div>
 					</form>
-					<h5 id="invalid">Time block is invalid</h5>
+					<h6 id="invalid">Time block is invalid</h6>
 				</div>
 			</div>
 		</div>
@@ -1322,7 +1335,10 @@
 						$("#invalid").hide();
 					}
 					else {
-						if(startAmPm === "am" && $("#startTime option:selected" ).val() !== "12" && $("#endTime option:selected" ).val() !== "12" && parseInt($("#endTime option:selected" ).val()) < parseInt($("#startTime option:selected" ).val())) {
+						if (start === end){
+							timeNotValid();
+						}
+						else if(startAmPm === "am" && $("#startTime option:selected" ).val() !== "12" && $("#endTime option:selected" ).val() !== "12" && parseInt($("#endTime option:selected" ).val()) < parseInt($("#startTime option:selected" ).val())) {
 							timeNotValid();
 						}
 
