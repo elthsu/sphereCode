@@ -20,8 +20,8 @@
 			}
 
 			#modalContent {
-				width: 50%;
-				height: 50%;
+				width: 60%;
+				height: 60%;
 				background-color: white;
 				position: fixed;
 				top: 50%;
@@ -1128,9 +1128,9 @@
 			</div>
 			<div id="mobileModal">
 				<div id="modalContent">
-					<h2>Please select desired block of time.</h2>
+					<h3>Please select desired block of time.</h3>
 					<form id="timeBlock">
-						<h3>Start time:</h3>
+						<h4>Start time:</h4>
 					  <select id="startDay">
 							<option value="sun" data-weight="1">Sunday</option>
 							<option value="mon" data-weight="2">Monday</option>
@@ -1162,7 +1162,7 @@
 							<option value="am">AM</option>
 							<option value="pm">PM</option>
 						</select>
-						<h3>End time:</h3>
+						<h4>End time:</h4>
 						<select id="endDay">
 							<option value="sun" data-weight="1">Sunday</option>
 							<option value="mon" data-weight="2">Monday</option>
@@ -1198,19 +1198,24 @@
 							<input id="modalSubmit" type="submit" />
 						</div>
 					</form>
-					<h3 id="invalid">Time block is invalid</h3>
+					<h5 id="invalid">Time block is invalid</h5>
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript" src="https://www.sphere.com.ai/js/jquery.min.js"></script>
-    <script>
+		<script type="text/javascript" src="https://www.sphere.com.ai/js/no-touch.js"></script>
+		<script type="text/javascript" src="https://www.sphere.com.ai/js/shiftcheckbox.js"></script>
+		<script type="text/javascript" src="https://www.sphere.com.ai/js/dragcheckbox.js"></script>
+
+		<script>
 
 			function timeNotValid() {
 				$("#invalid").show();
 			}
 
-      $(document).on("touchstart", function(event){
-        if(event.target.type === "checkbox" || event.target.id === "mobileModal") {
+      $(document).on("touchend", function(event){
+				event.preventDefault();
+        if(event.target.tagName === "LABEL" || event.target.id === "mobileModal") {
 					$("#mobileModal").toggle();
         }
       });
@@ -1322,8 +1327,5 @@
 			})
 
     </script>
-		<script type="text/javascript" src="https://www.sphere.com.ai/js/no-touch.js"></script>
-		<script type="text/javascript" src="https://www.sphere.com.ai/js/shiftcheckbox.js"></script>
-		<script type="text/javascript" src="https://www.sphere.com.ai/js/dragcheckbox.js"></script>
 	</body>
 </html>
