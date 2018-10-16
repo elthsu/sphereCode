@@ -1209,7 +1209,7 @@
 				$("#invalid").show();
 			}
 
-      $(document).bind("touchend", function(event){
+      $(document).on("touchstart", function(event){
         if(event.target.type === "checkbox" || event.target.id === "mobileModal") {
 					$("#mobileModal").toggle();
         }
@@ -1312,7 +1312,6 @@
 							timeNotValid();
 						}
 						else {
-							console.log("good to go")
 							$('#' + start).attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
 							$("#mobileModal").toggle();
 							$("#timeBlock").trigger("reset");
