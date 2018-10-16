@@ -24,7 +24,7 @@
 
 			#modalContent {
 				width: 60%;
-				height: 60%;
+				height: 65%;
 				background-color: white;
 				position: fixed;
 				top: 50%;
@@ -1312,8 +1312,12 @@
 								tempDay = "sat"
 								break;
 						}
+						console.log(end.slice(3));
 						if (startDay === tempDay) {
 							$('#' + tempDay+startTime+startHalf+startAmPm).attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
+						}
+						else if (i === numOfDays && end.slice(3) === "12am") {
+							break;
 						}
 						else {
 							$('#' + tempDay+"12am").attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
