@@ -8,6 +8,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0001">
 		<link rel="icon" type="image/png" href="https://www.sphere.com.ai/images/icon.png"/>
 		<link href="https://www.sphere.com.ai/style/screen.css" rel="stylesheet" type="text/css" media="screen"/>
+		<style>
+			#mobileModal {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(192, 192, 192, 0.8);
+			}
+
+			#modalContent {
+				width: 50%;
+				height: 50%;
+				background-color: white;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+				border-radius: 15px;
+				text-align: center;
+			}
+
+			#invalid {
+				display: none;
+				color: red;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="nav-height">
@@ -1098,14 +1126,202 @@
 			</section>
 			<div class="padding"></div>
 			</div>
+			<div id="mobileModal">
+				<div id="modalContent">
+					<h2>Please select desired block of time.</h2>
+					<form id="timeBlock">
+						<h3>Start time:</h3>
+					  <select id="startDay">
+							<option value="sun" data-weight="1">Sunday</option>
+							<option value="mon" data-weight="2">Monday</option>
+							<option value="tue" data-weight="3">Tuesday</option>
+							<option value="wed" data-weight="4">Wednesday</option>
+							<option value="thu" data-weight="5">Thursday</option>
+							<option value="fri" data-weight="6">Friday</option>
+							<option value="sat" data-weight="7">Saturday</option>
+					  </select>
+						<select id="startTime">
+							<option value="0">12</option>
+					    <option value="1">1</option>
+					    <option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+					  </select>
+						<select id="startHalf">
+							<option value="1">:00</option>
+							<option value="2">:30</option>
+						</select>
+						<select id="startAmPm">
+							<option value="am">AM</option>
+							<option value="pm">PM</option>
+						</select>
+						<h3>End time:</h3>
+						<select id="endDay">
+							<option value="sun" data-weight="1">Sunday</option>
+							<option value="mon" data-weight="2">Monday</option>
+							<option value="tue" data-weight="3">Tuesday</option>
+							<option value="wed" data-weight="4">Wednesday</option>
+							<option value="thu" data-weight="5">Thursday</option>
+							<option value="fri" data-weight="6">Friday</option>
+							<option value="sat" data-weight="7">Saturday</option>
+					  </select>
+						<select id="endTime">
+							<option value="0">12</option>
+					    <option value="1">1</option>
+					    <option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+					  </select>
+						<select id="endHalf">
+							<option value="1">:00</option>
+							<option value="2">:30</option>
+						</select>
+						<select id="endAmPm">
+							<option value="am">AM</option>
+							<option value="pm">PM</option>
+						</select>
+					  <div>
+							<input id="modalSubmit" type="submit" />
+						</div>
+					</form>
+					<h3 id="invalid">Time block is invalid</h3>
+				</div>
+			</div>
 		</div>
 		<script type="text/javascript" src="https://www.sphere.com.ai/js/jquery.min.js"></script>
     <script>
-      $(document).on("click", function(event){
-        if(event.target.id) {
-          console.log(event.target.id);
+
+			function timeNotValid() {
+				$("#invalid").show();
+			}
+
+      $(document).bind("touchend", function(event){
+        if(event.target.type === "checkbox" || event.target.id === "mobileModal") {
+					$("#mobileModal").toggle();
         }
       });
+
+			$("#timeBlock").submit(function(event){
+				event.preventDefault();
+				let startHalf;
+				let startDay = $("#startDay option:selected" ).val();
+				let startTime = $("#startTime option:selected" ).text();
+				if ($("#startHalf option:selected" ).val() === "1"){
+					startHalf = "";
+				}
+				else {
+					startHalf = "30";
+				}
+				let startAmPm = $("#startAmPm option:selected" ).val();
+
+				let endHalf;
+				let endDay = $("#endDay option:selected" ).val();
+				let endTime = $("#endTime option:selected" ).text();
+				if ($("#endHalf option:selected" ).val() === "1"){
+					endHalf = "";
+				}
+				else {
+					endHalf = "30";
+				}
+				let endAmPm = $("#endAmPm option:selected" ).val();
+				let start = startDay+startTime+startHalf+startAmPm;
+				let end = endDay+endTime+endHalf+endAmPm;
+				let startDayWeight = parseInt($("#startDay option:selected").attr("data-weight"));
+				let endDayWeight = parseInt($("#endDay option:selected").attr("data-weight"));
+
+				if (endDayWeight < startDayWeight) {
+					timeNotValid();
+				}
+
+				else if (endDayWeight > startDayWeight) {
+					let numOfDays = endDayWeight - startDayWeight;
+
+					for (let i = 0; i < numOfDays + 1; i++) {
+						let tempDay;
+						switch (startDayWeight + i) {
+							case 1:
+								tempDay = "sun"
+								break;
+
+							case 2:
+								tempDay = "mon"
+								break;
+
+							case 3:
+								tempDay = "tue"
+								break;
+
+							case 4:
+								tempDay = "wed"
+								break;
+
+							case 5:
+								tempDay = "thu"
+								break;
+
+							case 6:
+								tempDay = "fri"
+								break;
+
+							case 7:
+								tempDay = "sat"
+								break;
+						}
+						if (startDay === tempDay) {
+							$('#' + tempDay+startTime+startHalf+startAmPm).attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
+						}
+						else {
+							$('#' + tempDay+"12am").attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
+						}
+					}
+
+					$("#mobileModal").toggle();
+					$("#timeBlock").trigger("reset");
+					$("#invalid").hide();
+				}
+				else {
+					if (endAmPm < startAmPm) {
+						timeNotValid();
+					}
+					else if (endAmPm > startAmPm){
+						$('#' + start).attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
+						$("#mobileModal").toggle();
+						$("#timeBlock").trigger("reset");
+						$("#invalid").hide();
+					}
+					else {
+						if(startAmPm === "am" && $("#startTime option:selected" ).val() !== "12" && $("#endTime option:selected" ).val() !== "12" && parseInt($("#endTime option:selected" ).val()) < parseInt($("#startTime option:selected" ).val())) {
+							timeNotValid();
+						}
+
+						else if (startAmPm === "pm" && $("#startTime option:selected" ).val() !== "12" && $("#endTime option:selected" ).val() !== "12" && parseInt($("#endTime option:selected" ).val()) < parseInt($("#startTime option:selected" ).val())) {
+							timeNotValid();
+						}
+						else {
+							console.log("good to go")
+							$('#' + start).attr("checked", "true").parent().nextUntil($('#' + end).parent()).children("input").attr("checked", "true");
+							$("#mobileModal").toggle();
+							$("#timeBlock").trigger("reset");
+							$("#invalid").hide();
+						}
+					}
+				}
+			})
+
     </script>
 		<!-- <script type="text/javascript" src="https://www.sphere.com.ai/js/no-touch.js"></script>
 		<script type="text/javascript" src="https://www.sphere.com.ai/js/shiftcheckbox.js"></script>
